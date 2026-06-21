@@ -1,0 +1,38 @@
+Package: tesseractR
+Title: Four-Dimensional Tic-Tac-Toe with a Heuristic AI Opponent
+Version: 0.1.0
+Authors@R:
+    person("Raban", "Heller", email = "raban.heller@charite.de",
+           role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8006-9742"))
+Description: Play four-dimensional tic-tac-toe on a four-by-four-by-four-by-four
+    hypercube, where the first player to align four marks along any straight line
+    in four-dimensional space wins. Provides a game engine with legal-move
+    generation and win detection across all 272 winning lines, a depth-limited
+    negamax artificial-intelligence opponent with adjustable difficulty, 'ggplot2'
+    visualization of the hypercube as a grid of boards, and an interactive 'shiny'
+    application for play.
+License: MIT + file LICENSE
+URL: https://github.com/r-heller/tesseractR, https://r-heller.github.io/tesseractR/
+BugReports: https://github.com/r-heller/tesseractR/issues
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+Depends: R (>= 4.1.0)
+Imports:
+    cli,
+    ggplot2,
+    rlang,
+    stats,
+    tibble
+Suggests:
+    shiny,
+    bslib,
+    plotly,
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    withr,
+    covr,
+    pkgdown
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+Config/roxygen2/version: 8.0.0
