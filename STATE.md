@@ -12,8 +12,8 @@ Last updated: 2026-06-21 — S0 complete.
 | Stack | Depends on | Status | Date | Notes |
 |-------|-----------|--------|------|-------|
 | S0_FOUNDATION | — | DONE | 2026-06-21 | skeleton, DESCRIPTION, MIT, zzz cache, testthat scaffolding |
-| S1_GEOMETRY | S0 | TODO | | |
-| S2_ENGINE | S1 | BLOCKED | | |
+| S1_GEOMETRY | S0 | DONE | 2026-06-21 | 520 lines (not 272 — see deviations) |
+| S2_ENGINE | S1 | TODO | | |
 | S3_AI | S2 | BLOCKED | | AI + evaluation/win-prob/rate core |
 | S4_VISUALIZATION | S2 | BLOCKED | | |
 | S6_SIMULATION | S3 | BLOCKED | | self-play, opening stats, calibration |
@@ -27,7 +27,7 @@ Status values: `TODO` (runnable now) · `BLOCKED` (deps not done) · `IN_PROGRES
 
 ## Runnable Set (recompute after each update)
 
-**Currently runnable:** `S1_GEOMETRY`
+**Currently runnable:** `S2_ENGINE`
 
 Rule: a stack becomes runnable when all stacks in its "Depends on" column are `DONE`.
 - S0 done → S1 runnable
@@ -86,7 +86,14 @@ NEWS completeness. Internal helpers (`.tsr_*`) are not listed.
 _(Record anything that deviates from the stack spec, any deferred work, or any
 performance limitation discovered during the build. The audit loop reads this.)_
 
-- _(none yet)_
+- **Win-line count: 520, not 272.** The roadmap asserts 272 winning lines for the
+  4×4×4×4 board, but the standard formula for k-in-a-row on an n^d hypercube is
+  `((n+2)^d − n^d)/2`. For 4-in-a-row on 4^4 this gives `(6^4 − 4^4)/2 = 520`. The
+  spec's 272 is the count for **3-in-a-row on 3^4** (a different game). Since the
+  rest of the spec (256 cells, 4-in-a-row, board geometry, tests for axis-aligned
+  and hyperdiagonal lines) is consistent only with 4^4-with-4-in-a-row, the
+  geometry was honored and the assertion updated to 520. DESCRIPTION/NEWS/vignette
+  copy referring to "272 winning lines" was corrected to 520.
 
 ---
 
