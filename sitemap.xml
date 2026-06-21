@@ -1,11 +1,7 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://r-heller.github.io/tesseractR/404.html</loc></url>
-<url><loc>https://r-heller.github.io/tesseractR/AUDIT_REFINE_LOOP.html</loc></url>
 <url><loc>https://r-heller.github.io/tesseractR/LICENSE-text.html</loc></url>
 <url><loc>https://r-heller.github.io/tesseractR/LICENSE.html</loc></url>
-<url><loc>https://r-heller.github.io/tesseractR/ORCHESTRATOR.html</loc></url>
-<url><loc>https://r-heller.github.io/tesseractR/S0_FOUNDATION.html</loc></url>
-<url><loc>https://r-heller.github.io/tesseractR/STATE.html</loc></url>
 <url><loc>https://r-heller.github.io/tesseractR/articles/analysis.html</loc></url>
 <url><loc>https://r-heller.github.io/tesseractR/articles/index.html</loc></url>
 <url><loc>https://r-heller.github.io/tesseractR/articles/tesseractR.html</loc></url>
@@ -42,6 +38,5 @@
 <url><loc>https://r-heller.github.io/tesseractR/reference/tsr_win_prob.html</loc></url>
 <url><loc>https://r-heller.github.io/tesseractR/reference/tsr_winning_line.html</loc></url>
 <url><loc>https://r-heller.github.io/tesseractR/reference/ttt_board-methods.html</loc></url>
-<url><loc>https://r-heller.github.io/tesseractR/tesseractR_ROADMAP_COMPLETE.html</loc></url>
 </urlset>
 
