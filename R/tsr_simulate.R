@@ -102,11 +102,17 @@ tsr_play_game <- function(policy_x, policy_o, seed = NULL) {
   out
 }
 
-#' @export
-#' @method print tsr_game
+#' Print method for a played game
+#'
+#' One-screen `cli` summary of a `tsr_game`. Returns its input invisibly.
+#'
 #' @param x A `tsr_game`.
 #' @param ... Reserved.
 #' @return `x`, invisibly.
+#' @examples
+#' print(tsr_play_game("random", "random", seed = 1L))
+#' @export
+#' @method print tsr_game
 print.tsr_game <- function(x, ...) {
   rlang::check_dots_empty()
   cli::cli_h2("<tsr_game>")

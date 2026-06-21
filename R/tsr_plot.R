@@ -195,14 +195,19 @@ tsr_plot_slice <- function(board, axis = c("i", "j", "k", "l"), at = 0L,
   p
 }
 
-#' @export
-#' @importFrom ggplot2 autoplot
-#' @method autoplot ttt_board
+#' Autoplot method for a 4D tic-tac-toe board
+#'
+#' Registers a `ggplot2::autoplot()` method on `ttt_board` that delegates to
+#' `tsr_plot()`.
+#'
 #' @param object A `ttt_board`.
 #' @param ... Passed to `tsr_plot()`.
 #' @return A `ggplot` object.
 #' @examples
 #' ggplot2::autoplot(tsr_new_board())
+#' @export
+#' @importFrom ggplot2 autoplot
+#' @method autoplot ttt_board
 autoplot.ttt_board <- function(object, ...) {
   tsr_plot(object, ...)
 }

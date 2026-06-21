@@ -17,8 +17,8 @@ Last updated: 2026-06-21 — S0 complete.
 | S3_AI | S2 | DONE | 2026-06-21 | negamax+alpha-beta, eval/win_prob/rate; provisional calibration |
 | S4_VISUALIZATION | S2 | DONE | 2026-06-21 | tsr_plot/tsr_plot_slice/autoplot, print/format/summary |
 | S6_SIMULATION | S3 | DONE | 2026-06-21 | play/sim/opening_stats; calibration fitted (a≈0, b≈114, n=480) |
-| S7_ANALYSIS | S3 | TODO | | game analysis + behavior analytics |
-| S5_APP_SUBMISSION | S3, S4, S6, S7 | BLOCKED | | real-time eval + analysis panel |
+| S7_ANALYSIS | S3 | DONE | 2026-06-21 | analyze_game/turning_points/game_summary/behavior_profile/compare_profiles/plot_winprob |
+| S5_APP_SUBMISSION | S3, S4, S6, S7 | TODO | | real-time eval + analysis panel |
 | AUDIT_REFINE_LOOP | all | BLOCKED | | |
 
 Status values: `TODO` (runnable now) · `BLOCKED` (deps not done) · `IN_PROGRESS` · `DONE`
@@ -27,7 +27,7 @@ Status values: `TODO` (runnable now) · `BLOCKED` (deps not done) · `IN_PROGRES
 
 ## Runnable Set (recompute after each update)
 
-**Currently runnable:** `S7_ANALYSIS`
+**Currently runnable:** `S5_APP_SUBMISSION`
 
 Rule: a stack becomes runnable when all stacks in its "Depends on" column are `DONE`.
 - S0 done → S1 runnable
