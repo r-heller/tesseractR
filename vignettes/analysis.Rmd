@@ -1,6 +1,9 @@
 ---
 title: "Simulation and Game Analysis"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
 vignette: >
   %\VignetteIndexEntry{Simulation and Game Analysis}
   %\VignetteEngine{knitr::rmarkdown}
@@ -11,7 +14,8 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.width = 6, fig.height = 4
+  fig.width = 6.5, fig.height = 4,
+  out.width = "100%"
 )
 ```
 
@@ -19,45 +23,92 @@ knitr::opts_chunk$set(
 library(tesseractR)
 ```
 
-## Self-play and opening statistics
+`tesseractR` is also a *study tool*: a single evaluation core
+(`tsr_evaluate()` / `tsr_win_prob()` / `tsr_rate_moves()`) powers self-play
+simulation, per-ply game analysis, and aggregate behavioral profiles.
+Everything below routes through that core — no parallel scoring logic.
+
+## A single self-play game
 
 ```{r}
-sim <- tsr_simulate("random", "random", n_games = 10L, seed = 1L, verbose = FALSE)
-sim
+g <- tsr_play_game("greedy", "random", seed = 7L)
+g
 ```
 
-```{r}
-os <- tsr_opening_stats(sim, by = "first_move")
-head(os, 5)
+The `tsr_game` object records the move sequence, who moved on each ply, the
+final board, the outcome, and the policy labels. Replaying the moves on a
+fresh board reproduces `final_board` exactly.
+
+```{r, fig.alt = "Final position of one greedy-vs-random game"}
+tsr_plot(g$final_board)
 ```
 
-Larger runs (thousands of games) would expose real first-move structure. Pure-R
-self-play is intentionally the throughput ceiling for this release; Rcpp
-acceleration is a future enhancement.
+## Per-ply analysis
 
-## Single-game analysis
+`tsr_analyze_game()` walks the game and for each ply records: win-probability
+before/after, the move's `delta`, the best alternative, regret, and flags
+for missed wins, missed blocks, and turning points
+(`abs(delta) >= 0.15`).
 
 ```{r}
-game <- tsr_play_game("greedy", "random", seed = 7L)
-analysis <- tsr_analyze_game(game)
+analysis <- tsr_analyze_game(g)
 tail(analysis, 6)
 ```
 
-```{r, fig.alt = "Win-probability trajectory across plies"}
+```{r, fig.alt = "Win-probability trajectory across plies, turning points marked"}
 tsr_plot_winprob(analysis)
 ```
 
 ```{r}
 tsr_turning_points(analysis)
-tsr_game_summary(game)
+tsr_game_summary(g)
 ```
 
-## Comparing policies
+## Self-play in bulk
+
+`tsr_simulate()` runs many games and returns a tibble with the
+first-move position broken into its four coordinates — the substrate for
+opening statistics. Pure-R self-play is throughput-bounded; the heavy hot
+paths are flagged for future Rcpp replacement.
 
 ```{r}
-games_r <- lapply(1:4, function(s) tsr_play_game("random", "random", seed = s))
-games_g <- lapply(1:4, function(s) tsr_play_game("greedy", "random", seed = s))
+sim <- tsr_simulate("random", "random", n_games = 12L,
+                    seed = 1L, verbose = FALSE)
+sim
+```
+
+```{r}
+opening <- tsr_opening_stats(sim, by = "first_move")
+head(opening, 8)
+```
+
+The opening-statistics tibble carries a Wilson 95% confidence interval on
+`win_rate_x` — small `n_games` means wide intervals. A few hundred games
+per opening would be needed to draw real conclusions; this vignette uses a
+deliberately tiny sample so it builds in seconds.
+
+## Policy behavioral profile
+
+`tsr_behavior_profile()` aggregates per-ply analyses across many games into
+a single behavioral signature for one side. Use `tsr_compare_profiles()` to
+stack profiles side by side.
+
+```{r}
+games_r <- lapply(1:3, function(s) tsr_play_game("random", "random", seed = s))
+games_g <- lapply(1:3, function(s) tsr_play_game("greedy", "random", seed = s))
 p_random <- tsr_behavior_profile(games_r, side = 1L, label = "X random")
 p_greedy <- tsr_behavior_profile(games_g, side = 1L, label = "X greedy")
 tsr_compare_profiles(p_random, p_greedy)
 ```
+
+Read the rows side-by-side: `accuracy` is the share of plies that matched
+the engine's top move; `blunder_rate` is the share with regret above the
+documented threshold; `aggression` is the share of moves that opened a new
+3-in-line threat for the side.
+
+## Where this all meets the app
+
+The same `tsr_win_prob()` powers the app's live win-probability gauge, the
+same `tsr_rate_moves()` powers the per-cell rating overlay, and the same
+`tsr_analyze_game()` powers the post-game analysis tab — so a number you
+see in the UI matches exactly what these functions produce from the console.

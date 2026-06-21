@@ -1,18 +1,41 @@
 url: https://r-heller.github.io/tesseractR/
 
 template:
-  bootstrap: 5
-  bslib:
-    primary: "#5E2C8E"
-    base_font: {google: "Inter"}
-    heading_font: {google: "Inter"}
+  package: themakR
+
+development:
+  mode: auto
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, news]
+    right: [search, github]
+  components:
+    intro:
+      text: <i class="fa fa-rocket"></i> Get started
+      href: articles/tesseractR.html
+    reference:
+      text: <i class="fa fa-book"></i> Reference
+      href: reference/index.html
+    articles:
+      text: <i class="fa fa-graduation-cap"></i> Articles
+      menu:
+      - text: Getting Started with tesseractR
+        href: articles/tesseractR.html
+      - text: Simulation and Game Analysis
+        href: articles/analysis.html
+    news:
+      text: <i class="fa fa-newspaper"></i> News
+      href: news/index.html
 
 reference:
 - title: Board
+  desc: Construct and inspect a 4D tic-tac-toe board.
   contents:
   - tsr_new_board
   - is_ttt_board
 - title: Moves and status
+  desc: Play moves, undo, and read board state.
   contents:
   - tsr_move
   - tsr_undo
@@ -22,20 +45,24 @@ reference:
   - tsr_is_full
   - tsr_status
 - title: AI
+  desc: Heuristic negamax opponent with adjustable difficulty.
   contents:
   - tsr_ai_move
 - title: Evaluation
+  desc: The single source of truth for position scoring and win probability.
   contents:
   - tsr_evaluate
   - tsr_win_prob
   - tsr_rate_moves
 - title: Simulation
+  desc: Self-play between policies and opening statistics.
   contents:
   - tsr_play_game
   - tsr_simulate
   - tsr_opening_stats
   - print.tsr_game
 - title: Analysis
+  desc: Move-by-move analysis and behavioral profiling.
   contents:
   - tsr_analyze_game
   - tsr_turning_points
@@ -44,12 +71,14 @@ reference:
   - tsr_compare_profiles
   - tsr_plot_winprob
 - title: Visualization
+  desc: Render the hypercube as a grid of boards.
   contents:
   - tsr_plot
   - tsr_plot_slice
   - autoplot.ttt_board
   - ttt_board-methods
 - title: App
+  desc: Launch the interactive Shiny application.
   contents:
   - tsr_run_app
 

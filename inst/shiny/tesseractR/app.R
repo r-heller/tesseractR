@@ -14,48 +14,70 @@ theme_obj <- if (has_bslib) {
   NULL
 }
 
-ui_view_choices <- c("Full" = "full", "Slice (2D)" = "slice")
+tagged <- function(label, icon_name) {
+  shiny::tagList(shiny::icon(icon_name), " ", label)
+}
+
+ui_view_choices <- c(
+  "Full" = "full",
+  "Slice (2D)" = "slice"
+)
 if (has_plotly) ui_view_choices <- c(ui_view_choices, "Cube (3D)" = "cube")
 
 ui <- shiny::fluidPage(
   theme = theme_obj,
-  shiny::titlePanel("tesseractR — 4D tic-tac-toe"),
+  shiny::tags$head(shiny::tags$link(rel = "stylesheet", href = "custom.css")),
+  shiny::titlePanel(shiny::tagList(
+    shiny::tags$img(src = "logo.png", height = "48px",
+                    style = "margin-right: 12px; vertical-align: middle;"),
+    "tesseractR — 4D tic-tac-toe"
+  )),
   shiny::sidebarLayout(
     shiny::sidebarPanel(
-      shiny::actionButton("new_game", "New game", icon = shiny::icon("rotate")),
+      shiny::actionButton("new_game",
+                          shiny::tagList(shiny::icon("rotate-right"), " New game"),
+                          class = "btn-primary"),
       shiny::hr(),
-      shiny::radioButtons("mode", "Mode",
-                          choices = c("Hotseat" = "hotseat", "vs AI" = "ai"),
-                          selected = "ai"),
+      shiny::radioButtons(
+        "mode", tagged("Mode", "gamepad"),
+        choices = c("Hotseat" = "hotseat", "vs AI" = "ai"),
+        selected = "ai"
+      ),
       shiny::conditionalPanel(
         condition = "input.mode == 'ai'",
-        shiny::sliderInput("difficulty", "AI difficulty",
+        shiny::sliderInput("difficulty",
+                           tagged("AI difficulty", "robot"),
                            min = 1L, max = 4L,
                            value = init_difficulty, step = 1L)
       ),
       shiny::hr(),
-      shiny::radioButtons("view", "View",
-                          choices = ui_view_choices, selected = "full"),
+      shiny::radioButtons(
+        "view", tagged("View", "eye"),
+        choices = ui_view_choices, selected = "full"
+      ),
       shiny::conditionalPanel(
         condition = "input.view == 'slice' || input.view == 'cube'",
-        shiny::selectInput("fix_axis", "Fixed axis",
+        shiny::selectInput("fix_axis",
+                           tagged("Fixed axis", "compass"),
                            choices = c("i", "j", "k", "l"), selected = "l"),
-        shiny::sliderInput("fix_at", "At value",
+        shiny::sliderInput("fix_at",
+                           tagged("At value", "ruler"),
                            min = 0L, max = 3L, value = 0L, step = 1L)
       ),
-      shiny::checkboxInput("show_overlay", "Show move-rating overlay",
+      shiny::checkboxInput("show_overlay",
+                           tagged("Show move-rating overlay", "wand-magic-sparkles"),
                            value = TRUE),
       shiny::hr(),
-      shiny::h4("Status"),
-      shiny::verbatimTextOutput("status"),
-      shiny::h4("Win probability"),
-      shiny::verbatimTextOutput("win_prob")
+      shiny::h4(tagged("Status", "circle-info")),
+      shiny::uiOutput("status"),
+      shiny::h4(tagged("Win probability", "chart-line")),
+      shiny::uiOutput("win_prob")
     ),
     shiny::mainPanel(
       shiny::tabsetPanel(
         id = "tabs",
         shiny::tabPanel(
-          "Board",
+          tagged("Board", "table-cells"),
           shiny::conditionalPanel(
             condition = "input.view != 'cube'",
             shiny::plotOutput("board", click = "board_click", height = "600px")
@@ -63,15 +85,16 @@ ui <- shiny::fluidPage(
           shiny::conditionalPanel(
             condition = "input.view == 'cube'",
             if (has_plotly) plotly::plotlyOutput("board_cube", height = "600px")
-            else shiny::p("plotly is required for the 3D cube view; using slice instead.")
+            else shiny::p(shiny::icon("triangle-exclamation"),
+                          " plotly is required for the 3D cube view; using slice instead.")
           )
         ),
         shiny::tabPanel(
-          "Analysis",
+          tagged("Analysis", "magnifying-glass-chart"),
           shiny::plotOutput("trajectory", height = "300px"),
-          shiny::h4("Turning points"),
+          shiny::h4(tagged("Turning points", "bullseye")),
           shiny::tableOutput("turning"),
-          shiny::h4("Game summary"),
+          shiny::h4(tagged("Game summary", "clipboard-list")),
           shiny::tableOutput("summary")
         )
       )
@@ -98,22 +121,43 @@ server <- function(input, output, session) {
     tesseractR::tsr_rate_moves(b, method = "heuristic")
   })
 
-  output$status <- shiny::renderPrint({
+  player_glyph <- function(side) {
+    icon_name <- if (side == 1L) "xmark" else "circle"
+    colour    <- if (side == 1L) "#0072B2" else "#E69F00"
+    shiny::span(shiny::icon(icon_name),
+                style = sprintf("color: %s; font-weight: 600;", colour))
+  }
+
+  output$status <- shiny::renderUI({
     b <- rv$board
     s <- tesseractR::tsr_status(b)
-    cat(sprintf("moves: %d, to move: %s, winner: %s\n",
-                s$n_moves,
-                if (s$to_move == 1L) "X" else "O",
-                c("none", "X", "O")[s$winner + 1L]))
+    if (s$winner != 0L) {
+      shiny::tagList(
+        shiny::span(shiny::icon("trophy"), " winner: "),
+        player_glyph(s$winner)
+      )
+    } else if (s$is_full) {
+      shiny::tagList(shiny::icon("handshake"), " draw")
+    } else {
+      shiny::tagList(
+        shiny::span(shiny::icon("hourglass-half"),
+                    sprintf(" %d move(s), to move: ", s$n_moves)),
+        player_glyph(s$to_move)
+      )
+    }
   })
 
-  output$win_prob <- shiny::renderPrint({
+  output$win_prob <- shiny::renderUI({
     b <- rv$board
     if (tesseractR::tsr_check_win(b) != 0L || tesseractR::tsr_is_full(b)) {
-      cat("game over\n"); return()
+      return(shiny::tagList(shiny::icon("flag-checkered"), " game over"))
     }
     p <- tesseractR::tsr_win_prob(b, method = "heuristic")
-    cat(sprintf("%.2f for %s\n", p, if (b$to_move == 1L) "X" else "O"))
+    shiny::tagList(
+      shiny::span(sprintf("%.2f ", p)),
+      shiny::icon("arrow-right"), " ",
+      player_glyph(b$to_move)
+    )
   })
 
   build_full_plot <- function(b, overlay) {

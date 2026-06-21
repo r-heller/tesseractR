@@ -1,6 +1,9 @@
 ---
 title: "Getting Started with tesseractR"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
 vignette: >
   %\VignetteIndexEntry{Getting Started with tesseractR}
   %\VignetteEngine{knitr::rmarkdown}
@@ -11,7 +14,8 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.width = 6, fig.height = 6
+  fig.width = 6.5, fig.height = 6.5,
+  out.width = "100%"
 )
 ```
 
@@ -21,71 +25,126 @@ library(tesseractR)
 
 ## What is 4D tic-tac-toe?
 
-`tesseractR` plays tic-tac-toe on a four-dimensional 4×4×4×4 hypercube — 256
-cells indexed by `(i, j, k, l)` with each coordinate in `0:3`. A line is any
+`tesseractR` plays tic-tac-toe on a four-dimensional **4×4×4×4** hypercube —
+256 cells indexed by `(i, j, k, l)`, each coordinate in `0:3`. A *line* is any
 four cells whose successive differences equal a constant non-zero direction
-vector in `{−1, 0, 1}^4`. After deduplicating reversed directions there are
-**520 winning lines** by the standard `((n+2)^d − n^d) / 2` formula for
-`d = n = 4`.
+vector in `{−1, 0, 1}^4`. After collapsing reversed directions there are
+**520 winning lines** by the standard formula
+`((n + 2)^d − n^d) / 2` evaluated at `d = n = 4`.
+
+The geometry is the only thing that's harder than ordinary tic-tac-toe.
+Everything else (engine, AI, visualization, analysis) is the usual surface,
+just generalised over the 256-cell board.
 
 ## A first game
 
+Each cell has a unique linear index in `1:256` derived from
+`idx = 1 + i + 4j + 16k + 64l`. You can call `tsr_move()` with explicit
+coordinates or with `cell =`:
+
 ```{r}
 b <- tsr_new_board()
-b <- tsr_move(b, 0L, 0L, 0L, 0L)   # X at (0,0,0,0) = cell 1
-b <- tsr_move(b, cell = 17L)       # O
-b <- tsr_move(b, 1L, 0L, 0L, 0L)   # X at (1,0,0,0) = cell 2
+b <- tsr_move(b, 0L, 0L, 0L, 0L)    # X at (0,0,0,0) = cell 1
+b <- tsr_move(b, cell = 17L)        # O at cell 17
+b <- tsr_move(b, 1L, 0L, 0L, 0L)    # X at (1,0,0,0) = cell 2
 print(b)
 ```
 
-```{r, fig.alt = "Mid-game tesseractR board"}
+```{r, fig.alt = "Mid-game tesseractR board on the 4x4 of 4x4 layout"}
 tsr_plot(b)
 ```
 
+The plot draws the hypercube as a 4×4 outer grid (indexed by `(k, l)`) where
+each cell contains an inner 4×4 board (indexed by `(i, j)`). Player X is the
+blue mark; player O is orange (Okabe–Ito).
+
 ## Detecting a win
 
-We continue the game until X completes an axis-aligned line:
+Win detection scans the cached 520-line table against the board state.
+Continuing the game until X completes an axis-aligned line:
 
 ```{r}
-b <- tsr_move(b, cell = 18L)       # O
-b <- tsr_move(b, 2L, 0L, 0L, 0L)   # X
-b <- tsr_move(b, cell = 19L)       # O
-b <- tsr_move(b, 3L, 0L, 0L, 0L)   # X completes 1-2-3-4
+b <- tsr_move(b, cell = 18L)        # O
+b <- tsr_move(b, 2L, 0L, 0L, 0L)    # X
+b <- tsr_move(b, cell = 19L)        # O
+b <- tsr_move(b, 3L, 0L, 0L, 0L)    # X completes 1-2-3-4
 tsr_check_win(b)
 tsr_winning_line(b)
+tsr_status(b)
 ```
 
-```{r, fig.alt = "Slice view highlighting the in-plane winning line"}
+```{r, fig.alt = "Full board with the winning line highlighted"}
+tsr_plot(b)
+```
+
+The slice view fixes one axis at one value and renders the resulting 4×4×4
+cube as a strip — handy for inspecting a plane in which an otherwise
+scattered diagonal reads as a straight line:
+
+```{r, fig.height = 2.4, fig.alt = "Slice along l = 0 containing the winning line"}
 tsr_plot_slice(b, axis = "l", at = 0L)
+```
+
+## Legal moves and undo
+
+`tsr_legal_moves()` is always a type-stable integer vector (length 0 on a
+finished or full board). `tsr_undo()` rewinds moves immutably:
+
+```{r}
+length(tsr_legal_moves(tsr_new_board()))
+length(tsr_legal_moves(b))
+
+# Undo to a non-terminal position
+b_pre <- tsr_undo(b, n = 1L)
+tsr_status(b_pre)
 ```
 
 ## Playing the AI
 
 `tsr_ai_move()` returns the chosen linear cell index. Difficulty `1` always
-takes an immediate win and blocks an immediate threat. Higher difficulties
-look further ahead (search is exponential in pure R — depth 4 may take
-several seconds).
+takes an immediate win and blocks an immediate threat; higher difficulties
+search further ahead (depth-limited negamax with alpha-beta). Search is
+exponential in pure R — depth 4 may take several seconds; Rcpp acceleration
+is a planned future enhancement.
 
 ```{r}
 b <- tsr_new_board()
-b <- tsr_move(b, cell = 1L)        # human X
-ai_cell <- tsr_ai_move(b, difficulty = 1L)
-b <- tsr_move(b, cell = ai_cell)   # AI O
-ai_cell
+b <- tsr_move(b, cell = 1L)              # human X
+ai_o <- tsr_ai_move(b, difficulty = 1L)  # AI O
+b <- tsr_move(b, cell = ai_o)
+print(b)
 ```
 
 ## Evaluating positions
+
+`tsr_evaluate()` returns a unitless raw score; positive favours `player`.
+`tsr_win_prob()` calibrates the score into `[0, 1]` via a logistic mapping
+whose coefficients are fitted from self-play data (S6) and shipped as
+internal package data.
 
 ```{r}
 b <- tsr_new_board()
 b <- tsr_move(b, cell = 1L); b <- tsr_move(b, cell = 17L)
 b <- tsr_move(b, cell = 2L)
+tsr_evaluate(b, player = 1L)
 tsr_win_prob(b, player = 1L)
-head(tsr_rate_moves(b))
 ```
 
-## The app
+`tsr_rate_moves()` is the per-move best-next-move surface used by the AI,
+the app's overlay, and the analysis routines:
 
-`tsr_run_app()` launches the interactive Shiny version with a live
-move-rating overlay and a game-analysis panel. See the
-"Simulation and Game Analysis" vignette for self-play and analytics.
+```{r}
+head(tsr_rate_moves(b), 5)
+```
+
+## The interactive app
+
+`tsr_run_app()` launches the Shiny version with a live move-rating overlay,
+a win-probability gauge, and a game-analysis panel. The Full / Slice (2D) /
+Cube (3D) view toggle lets you change perspective without changing state.
+
+```r
+tsr_run_app(difficulty = 2L)
+```
+
+See **"Simulation and Game Analysis"** for self-play and post-game analytics.
