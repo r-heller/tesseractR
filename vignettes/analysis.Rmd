@@ -1,0 +1,63 @@
+---
+title: "Simulation and Game Analysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Simulation and Game Analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 6, fig.height = 4
+)
+```
+
+```{r setup}
+library(tesseractR)
+```
+
+## Self-play and opening statistics
+
+```{r}
+sim <- tsr_simulate("random", "random", n_games = 10L, seed = 1L, verbose = FALSE)
+sim
+```
+
+```{r}
+os <- tsr_opening_stats(sim, by = "first_move")
+head(os, 5)
+```
+
+Larger runs (thousands of games) would expose real first-move structure. Pure-R
+self-play is intentionally the throughput ceiling for this release; Rcpp
+acceleration is a future enhancement.
+
+## Single-game analysis
+
+```{r}
+game <- tsr_play_game("greedy", "random", seed = 7L)
+analysis <- tsr_analyze_game(game)
+tail(analysis, 6)
+```
+
+```{r, fig.alt = "Win-probability trajectory across plies"}
+tsr_plot_winprob(analysis)
+```
+
+```{r}
+tsr_turning_points(analysis)
+tsr_game_summary(game)
+```
+
+## Comparing policies
+
+```{r}
+games_r <- lapply(1:4, function(s) tsr_play_game("random", "random", seed = s))
+games_g <- lapply(1:4, function(s) tsr_play_game("greedy", "random", seed = s))
+p_random <- tsr_behavior_profile(games_r, side = 1L, label = "X random")
+p_greedy <- tsr_behavior_profile(games_g, side = 1L, label = "X greedy")
+tsr_compare_profiles(p_random, p_greedy)
+```

@@ -1,0 +1,9 @@
+body {
+  background-color: #f6f4fb;
+}
+.shiny-input-container .control-label {
+  font-weight: 600;
+}
+pre {
+  background-color: #fafafa;
+}

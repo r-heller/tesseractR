@@ -1,0 +1,60 @@
+url: https://r-heller.github.io/tesseractR/
+
+template:
+  bootstrap: 5
+  bslib:
+    primary: "#5E2C8E"
+    base_font: {google: "Inter"}
+    heading_font: {google: "Inter"}
+
+reference:
+- title: Board
+  contents:
+  - tsr_new_board
+  - is_ttt_board
+- title: Moves and status
+  contents:
+  - tsr_move
+  - tsr_undo
+  - tsr_legal_moves
+  - tsr_check_win
+  - tsr_winning_line
+  - tsr_is_full
+  - tsr_status
+- title: AI
+  contents:
+  - tsr_ai_move
+- title: Evaluation
+  contents:
+  - tsr_evaluate
+  - tsr_win_prob
+  - tsr_rate_moves
+- title: Simulation
+  contents:
+  - tsr_play_game
+  - tsr_simulate
+  - tsr_opening_stats
+  - print.tsr_game
+- title: Analysis
+  contents:
+  - tsr_analyze_game
+  - tsr_turning_points
+  - tsr_game_summary
+  - tsr_behavior_profile
+  - tsr_compare_profiles
+  - tsr_plot_winprob
+- title: Visualization
+  contents:
+  - tsr_plot
+  - tsr_plot_slice
+  - autoplot.ttt_board
+  - ttt_board-methods
+- title: App
+  contents:
+  - tsr_run_app
+
+articles:
+- title: Articles
+  contents:
+  - tesseractR
+  - analysis

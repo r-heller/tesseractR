@@ -18,3 +18,5 @@
 ^STATE\.md$
 ^tesseractR_ROADMAP_COMPLETE\.md$
 ^tesseractR_pipeline\.zip$
+^doc$
+^Meta$
