@@ -1,4 +1,4 @@
-# tesseractR ![tesseractR logo](reference/figures/logo.png)
+# tesseractR
 
 `tesseractR` plays four-dimensional tic-tac-toe on a `4×4×4×4` hypercube
 (256 cells, 520 winning lines), with a depth-limited negamax AI, a

@@ -2,6 +2,8 @@
 
 ## Board
 
+Construct and inspect a 4D tic-tac-toe board.
+
 - [`tsr_new_board()`](https://r-heller.github.io/tesseractR/reference/tsr_new_board.md)
   : Create a new, empty 4D tic-tac-toe board
 
@@ -11,6 +13,8 @@
   Test whether an object is a `ttt_board`
 
 ## Moves and status
+
+Play moves, undo, and read board state.
 
 - [`tsr_move()`](https://r-heller.github.io/tesseractR/reference/tsr_move.md)
   : Make a move on a 4D tic-tac-toe board
@@ -29,10 +33,14 @@
 
 ## AI
 
+Heuristic negamax opponent with adjustable difficulty.
+
 - [`tsr_ai_move()`](https://r-heller.github.io/tesseractR/reference/tsr_ai_move.md)
   : AI move on a 4D tic-tac-toe board
 
 ## Evaluation
+
+The single source of truth for position scoring and win probability.
 
 - [`tsr_evaluate()`](https://r-heller.github.io/tesseractR/reference/tsr_evaluate.md)
   : Evaluate a position
@@ -42,6 +50,8 @@
   : Rate every legal move from a position
 
 ## Simulation
+
+Self-play between policies and opening statistics.
 
 - [`tsr_play_game()`](https://r-heller.github.io/tesseractR/reference/tsr_play_game.md)
   : Play a single game between two policies
@@ -53,6 +63,8 @@
   : Print method for a played game
 
 ## Analysis
+
+Move-by-move analysis and behavioral profiling.
 
 - [`tsr_analyze_game()`](https://r-heller.github.io/tesseractR/reference/tsr_analyze_game.md)
   : Analyze a played game move by move
@@ -69,6 +81,8 @@
 
 ## Visualization
 
+Render the hypercube as a grid of boards.
+
 - [`tsr_plot()`](https://r-heller.github.io/tesseractR/reference/tsr_plot.md)
   : Plot a 4D tic-tac-toe board as a 4x4 grid of 4x4 boards
 - [`tsr_plot_slice()`](https://r-heller.github.io/tesseractR/reference/tsr_plot_slice.md)
@@ -81,6 +95,8 @@
   : Print methods for a 4D tic-tac-toe board
 
 ## App
+
+Launch the interactive Shiny application.
 
 - [`tsr_run_app()`](https://r-heller.github.io/tesseractR/reference/tsr_run_app.md)
   : Launch the tesseractR Shiny app
