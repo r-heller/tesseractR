@@ -13,9 +13,9 @@ Last updated: 2026-06-21 — S0 complete.
 |-------|-----------|--------|------|-------|
 | S0_FOUNDATION | — | DONE | 2026-06-21 | skeleton, DESCRIPTION, MIT, zzz cache, testthat scaffolding |
 | S1_GEOMETRY | S0 | DONE | 2026-06-21 | 520 lines (not 272 — see deviations) |
-| S2_ENGINE | S1 | TODO | | |
-| S3_AI | S2 | BLOCKED | | AI + evaluation/win-prob/rate core |
-| S4_VISUALIZATION | S2 | BLOCKED | | |
+| S2_ENGINE | S1 | DONE | 2026-06-21 | ttt_board, move/undo/legal/check/status, immutable |
+| S3_AI | S2 | TODO | | AI + evaluation/win-prob/rate core |
+| S4_VISUALIZATION | S2 | TODO | | |
 | S6_SIMULATION | S3 | BLOCKED | | self-play, opening stats, calibration |
 | S7_ANALYSIS | S3 | BLOCKED | | game analysis + behavior analytics |
 | S5_APP_SUBMISSION | S3, S4, S6, S7 | BLOCKED | | real-time eval + analysis panel |
@@ -27,7 +27,7 @@ Status values: `TODO` (runnable now) · `BLOCKED` (deps not done) · `IN_PROGRES
 
 ## Runnable Set (recompute after each update)
 
-**Currently runnable:** `S2_ENGINE`
+**Currently runnable:** `S3_AI`, `S4_VISUALIZATION`
 
 Rule: a stack becomes runnable when all stacks in its "Depends on" column are `DONE`.
 - S0 done → S1 runnable
