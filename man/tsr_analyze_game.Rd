@@ -31,6 +31,8 @@ missed wins / missed blocks / turning points.
 A turning point is a ply with \code{abs(delta) >= 0.15}.
 }
 \examples{
+\donttest{
 g <- tsr_play_game("random", "random", seed = 1L)
 tsr_analyze_game(g)
+}
 }

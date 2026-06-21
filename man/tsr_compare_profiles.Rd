@@ -17,8 +17,10 @@ Row-binds a sequence of \code{tsr_behavior_profile()} tibbles for side-by-side
 comparison. Errors on mismatched columns.
 }
 \examples{
+\donttest{
 g1 <- tsr_play_game("random", "random", seed = 1L)
 p1 <- tsr_behavior_profile(list(g1), side = 1L, label = "random")
 p2 <- tsr_behavior_profile(list(g1), side = 2L, label = "random")
 tsr_compare_profiles(p1, p2)
+}
 }

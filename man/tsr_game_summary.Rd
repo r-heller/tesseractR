@@ -20,6 +20,8 @@ Compact scorecard with missed-win / missed-block counts, mean regret per
 player, turning-point count, and final decisiveness.
 }
 \examples{
+\donttest{
 g <- tsr_play_game("random", "random", seed = 1L)
 tsr_game_summary(g)
+}
 }

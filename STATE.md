@@ -19,7 +19,7 @@ Last updated: 2026-06-21 — S0 complete.
 | S6_SIMULATION | S3 | DONE | 2026-06-21 | play/sim/opening_stats; calibration fitted (a≈0, b≈114, n=480) |
 | S7_ANALYSIS | S3 | DONE | 2026-06-21 | analyze_game/turning_points/game_summary/behavior_profile/compare_profiles/plot_winprob |
 | S5_APP_SUBMISSION | S3, S4, S6, S7 | DONE | 2026-06-21 | Shiny app, 2 vignettes, README, pkgdown, NEWS |
-| AUDIT_REFINE_LOOP | all | TODO | | |
+| AUDIT_REFINE_LOOP | all | DONE | 2026-06-21 | R CMD check 0/0/0; pkgdown clean; vignettes < 60s; spell clean |
 
 Status values: `TODO` (runnable now) · `BLOCKED` (deps not done) · `IN_PROGRESS` · `DONE`
 
@@ -27,7 +27,7 @@ Status values: `TODO` (runnable now) · `BLOCKED` (deps not done) · `IN_PROGRES
 
 ## Runnable Set (recompute after each update)
 
-**Currently runnable:** `AUDIT_REFINE_LOOP`
+**Currently runnable:** _(none — package submission-ready locally; manual review + push to remote pending)_
 
 Rule: a stack becomes runnable when all stacks in its "Depends on" column are `DONE`.
 - S0 done → S1 runnable
@@ -86,6 +86,18 @@ NEWS completeness. Internal helpers (`.tsr_*`) are not listed.
 _(Record anything that deviates from the stack spec, any deferred work, or any
 performance limitation discovered during the build. The audit loop reads this.)_
 
+- **Push to `origin` blocked: no terminal auth.** `git push -u origin build/tesseractR`
+  fails with "could not read Username for 'https://github.com'". Run `gh auth login`
+  (or switch the remote to SSH) and push manually. Per orchestrator policy this was
+  reported rather than worked around; no force-pushes, no rewrites.
+- **Commit author identity reflects the GitHub-noreply identity, not the charite address.**
+  The orchestrator asks every commit be `Raban Heller <raban.heller@charite.de>`. The
+  shell has `GIT_AUTHOR_NAME/EMAIL` and `GIT_COMMITTER_NAME/EMAIL` set system-wide to
+  `R. Heller <58561665+r-heller@users.noreply.github.com>` and those env vars override
+  the local git config. **No AI co-author trailers or attribution appear anywhere** —
+  the substantive Phase D.5 concern is satisfied. If the academic email is required on
+  the published history, the per-stack commits will need to be rebased with explicit
+  `--author=`, which is a history rewrite needing your sign-off.
 - **Win-line count: 520, not 272.** The roadmap asserts 272 winning lines for the
   4×4×4×4 board, but the standard formula for k-in-a-row on an n^d hypercube is
   `((n+2)^d − n^d)/2`. For 4-in-a-row on 4^4 this gives `(6^4 − 4^4)/2 = 520`. The

@@ -20,8 +20,10 @@
 #'   `best_cell`, `best_delta`, `regret`,
 #'   `is_best`, `missed_win`, `missed_block`, `is_turning_point`.
 #' @examples
+#' \donttest{
 #' g <- tsr_play_game("random", "random", seed = 1L)
 #' tsr_analyze_game(g)
+#' }
 #' @export
 tsr_analyze_game <- function(game, method = c("heuristic", "rollout"),
                              n = 200L) {
@@ -113,8 +115,10 @@ tsr_analyze_game <- function(game, method = c("heuristic", "rollout"),
 #' @param analysis A tibble produced by `tsr_analyze_game()`.
 #' @return A tibble with the same schema as `analysis`, possibly zero rows.
 #' @examples
+#' \donttest{
 #' g <- tsr_play_game("random", "random", seed = 1L)
 #' tsr_turning_points(tsr_analyze_game(g))
+#' }
 #' @export
 tsr_turning_points <- function(analysis) {
   if (!is.data.frame(analysis)) {
@@ -140,8 +144,10 @@ isTRUE_vec <- function(x) !is.na(x) & x
 #'   `n_missed_blocks_o`, `mean_regret_x`, `mean_regret_o`,
 #'   `n_turning_points`, `decisiveness`.
 #' @examples
+#' \donttest{
 #' g <- tsr_play_game("random", "random", seed = 1L)
 #' tsr_game_summary(g)
+#' }
 #' @export
 tsr_game_summary <- function(game) {
   a <- tsr_analyze_game(game)
@@ -175,9 +181,11 @@ tsr_game_summary <- function(game) {
 #'   `accuracy`, `mean_regret`, `blunder_rate`, `win_conversion`,
 #'   `defense_rate`, `aggression`, `mean_decisiveness`.
 #' @examples
+#' \donttest{
 #' g1 <- tsr_play_game("random", "random", seed = 1L)
 #' g2 <- tsr_play_game("random", "random", seed = 2L)
 #' tsr_behavior_profile(list(g1, g2), side = 1L, label = "random")
+#' }
 #' @export
 tsr_behavior_profile <- function(games, side = 1L, label = NULL) {
   if (!is.list(games) || any(!vapply(games, inherits, logical(1L), "tsr_game"))) {
@@ -284,10 +292,12 @@ tsr_behavior_profile <- function(games, side = 1L, label = NULL) {
 #' @param ... Tibbles produced by `tsr_behavior_profile()`.
 #' @return A tibble with one row per input.
 #' @examples
+#' \donttest{
 #' g1 <- tsr_play_game("random", "random", seed = 1L)
 #' p1 <- tsr_behavior_profile(list(g1), side = 1L, label = "random")
 #' p2 <- tsr_behavior_profile(list(g1), side = 2L, label = "random")
 #' tsr_compare_profiles(p1, p2)
+#' }
 #' @export
 tsr_compare_profiles <- function(...) {
   profs <- list(...)
@@ -310,8 +320,10 @@ tsr_compare_profiles <- function(...) {
 #' @param analysis A tibble from `tsr_analyze_game()`.
 #' @return A `ggplot` object.
 #' @examples
+#' \donttest{
 #' g <- tsr_play_game("random", "random", seed = 1L)
 #' tsr_plot_winprob(tsr_analyze_game(g))
+#' }
 #' @export
 tsr_plot_winprob <- function(analysis) {
   if (!is.data.frame(analysis)) {

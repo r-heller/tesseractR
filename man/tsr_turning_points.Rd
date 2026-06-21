@@ -17,6 +17,8 @@ Filters the analysis to plies where \code{is_turning_point} is \code{TRUE}, sort
 \code{abs(delta)} descending.
 }
 \examples{
+\donttest{
 g <- tsr_play_game("random", "random", seed = 1L)
 tsr_turning_points(tsr_analyze_game(g))
+}
 }

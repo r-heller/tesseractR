@@ -158,19 +158,23 @@ tsr_simulate <- function(policy_x, policy_o, n_games = 100L,
   if (show_bar) {
     cli::cli_progress_bar("Simulating games", total = n_games)
   }
-  winners <- integer(n_games)
-  n_moves <- integer(n_games)
-  first_move <- integer(n_games)
   body <- function() {
+    winners <- integer(n_games)
+    n_moves <- integer(n_games)
+    first_move <- integer(n_games)
     for (g in seq_len(n_games)) {
       game <- tsr_play_game(policy_x, policy_o, seed = NULL)
-      winners[g] <<- game$winner
-      n_moves[g] <<- game$n_moves
-      first_move[g] <<- if (length(game$moves) > 0L) game$moves[1L] else NA_integer_
+      winners[g] <- game$winner
+      n_moves[g] <- game$n_moves
+      first_move[g] <- if (length(game$moves) > 0L) game$moves[1L] else NA_integer_
       if (show_bar) cli::cli_progress_update()
     }
+    list(winners = winners, n_moves = n_moves, first_move = first_move)
   }
-  if (is.null(seed)) body() else withr::with_seed(seed, body())
+  res <- if (is.null(seed)) body() else withr::with_seed(seed, body())
+  winners <- res$winners
+  n_moves <- res$n_moves
+  first_move <- res$first_move
   if (show_bar) cli::cli_progress_done()
   coord <- .tsr_idx_to_coord(ifelse(is.na(first_move), 1L, first_move))
   coord[is.na(first_move), ] <- NA_integer_
