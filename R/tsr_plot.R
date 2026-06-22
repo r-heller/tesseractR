@@ -75,8 +75,10 @@ tsr_plot <- function(board, highlight_win = TRUE, ...) {
   if (highlight_win && winner != 0L) {
     wl <- tsr_winning_line(board)
     if (length(wl) == 4L) {
-      coords_w <- .tsr_idx_to_coord(wl)
-      xyw <- .tsr_layout(coords_w)
+      # Index into the full-board layout: `.tsr_layout()` derives the block row
+      # from `max(by)` of its input, so recomputing it on the 4-cell subset
+      # would misplace the highlight whenever the line does not reach l = 3.
+      xyw <- xy[wl, , drop = FALSE]
       wdf <- tibble::tibble(x = xyw[, "x"], y = xyw[, "y"])
       p <- p + ggplot2::geom_point(
         data = wdf,

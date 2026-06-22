@@ -165,8 +165,8 @@ server <- function(input, output, session) {
     if (overlay) {
       r <- current_rating()
       if (!is.null(r) && nrow(r) > 0L) {
-        coords <- tesseractR:::.tsr_idx_to_coord(r$cell)
-        xy <- tesseractR:::.tsr_layout(coords)
+        full_xy <- tesseractR:::.tsr_layout(tesseractR:::.tsr_idx_to_coord(1:256))
+        xy <- full_xy[r$cell, , drop = FALSE]
         df <- tibble::tibble(
           x = xy[, "x"], y = xy[, "y"],
           win_prob = r$win_prob,
