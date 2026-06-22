@@ -8,12 +8,23 @@ development:
 
 navbar:
   structure:
-    left:  [intro, reference, articles, news]
+    left:  [intro, tutorial, reference, articles, news]
     right: [search, github]
   components:
     intro:
       text: <i class="fa fa-rocket"></i> Get started
       href: articles/tesseractR.html
+    tutorial:
+      text: <i class="fa fa-gamepad"></i> How to play
+      menu:
+      - text: 1. The rules of 4D tic-tac-toe
+        href: articles/play-01-rules.html
+      - text: 2. Playing in the app
+        href: articles/play-02-app.html
+      - text: 3. Seeing in four dimensions
+        href: articles/play-03-strategy.html
+      - text: 4. Playing from the R console
+        href: articles/play-04-api.html
     reference:
       text: <i class="fa fa-book"></i> Reference
       href: reference/index.html
@@ -83,6 +94,10 @@ reference:
   - tsr_run_app
 
 articles:
+- title: Tutorial — how to play
+  desc: A four-part, screenshot-driven guide to playing 4D tic-tac-toe.
+  contents:
+  - starts_with("articles/play-")
 - title: Articles
   contents:
   - tesseractR

@@ -1,0 +1,141 @@
+---
+title: "4. Playing from the R console"
+description: >
+  Play tesseractR directly in R: create a board, make and undo moves, list legal
+  moves, ask the AI for a move, evaluate positions, and plot the result.
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7, fig.height = 7,
+  out.width = "100%",
+  dpi = 120
+)
+```
+
+```{r setup}
+library(tesseractR)
+```
+
+> **Tutorial page 4 of 4.**
+> Previous: [« Seeing in four dimensions](play-03-strategy.html) ·
+> Back to the start: [The rules](play-01-rules.html)
+
+The app is the friendly front end, but the whole game is scriptable. This page is
+the console version of the same moves.
+
+## A board and a move
+
+A game starts from an empty board. X is always to move first.
+
+```{r board}
+b <- tsr_new_board()
+b
+```
+
+Make a move with either explicit coordinates or a linear `cell` index — the two
+calls below are equivalent ways of naming cell 1, `(0, 0, 0, 0)`:
+
+```{r move}
+b <- tsr_move(b, 0L, 0L, 0L, 0L)   # X at (0,0,0,0)
+b <- tsr_move(b, cell = 17L)        # O at cell 17 = (0,0,1,0)
+b <- tsr_move(b, 1L, 0L, 0L, 0L)   # X at (1,0,0,0)
+b
+```
+
+`tsr_status()` is the machine-readable summary the app shows in its sidebar:
+
+```{r status}
+tsr_status(b)
+```
+
+Made a mistake? `tsr_undo()` rolls back one or more plies:
+
+```{r undo}
+b <- tsr_undo(b, n = 1L)    # take back O's reply... err, the last move
+tsr_status(b)$n_moves
+```
+
+## Listing the legal moves
+
+`tsr_legal_moves()` returns the cell indices that are still empty:
+
+```{r legal}
+moves <- tsr_legal_moves(b)
+length(moves)
+head(moves, 8)
+```
+
+## Asking the AI for a move
+
+`tsr_ai_move()` returns the cell the negamax engine would play, with a tunable
+search depth via `difficulty` (1–4):
+
+```{r ai}
+ai_cell <- tsr_ai_move(b, difficulty = 2L)
+ai_cell
+b <- tsr_move(b, cell = ai_cell)
+tsr_status(b)
+```
+
+## A complete game loop
+
+Putting it together: a short game where *you* play a fixed opening and the AI
+answers each move. (In a real session you would choose moves interactively; here
+the human side is scripted so the article is reproducible.)
+
+```{r loop}
+set.seed(1)
+b <- tsr_new_board()
+my_moves <- c(1L, 2L, 3L, 86L, 171L)   # a scripted "human" (player X)
+
+for (cell in my_moves) {
+  if (tsr_status(b)$is_over) break
+  legal <- tsr_legal_moves(b)
+  if (!(cell %in% legal)) cell <- legal[1]            # fall back if AI took it
+  b <- tsr_move(b, cell = cell)                       # X (you)
+  if (tsr_status(b)$is_over) break
+  b <- tsr_move(b, cell = tsr_ai_move(b, difficulty = 2L))  # O (AI)
+}
+
+tsr_status(b)
+```
+
+```{r loop-plot, fig.alt = "The board after a short scripted game between a human opening and the AI."}
+tsr_plot(b)
+```
+
+## Evaluating a position
+
+Three functions read a position, all sharing one evaluation core:
+
+```{r eval}
+tsr_evaluate(b)                       # raw score for the side to move
+tsr_win_prob(b, method = "heuristic") # squashed to a 0..1 win probability
+```
+
+`tsr_rate_moves()` scores *every* legal move at once and is the engine behind the
+app's overlay. The columns `is_best`, `is_winning`, and `is_blocking` are the
+quickest way to find the move that matters:
+
+```{r rate}
+rated <- tsr_rate_moves(b, method = "heuristic")
+head(rated[order(-rated$win_prob),
+           c("cell", "i", "j", "k", "l", "win_prob", "is_best")], 5)
+```
+
+## Where to go next
+
+* Run the same game interactively with `tsr_run_app()` — see
+  [Playing in the app](play-02-app.html).
+* Simulate many games and profile playing styles in
+  [Simulation and Game Analysis](analysis.html).
+* Browse every function in the [reference index](../reference/index.html).
+
+> Back to the start: [The rules of 4D tic-tac-toe »](play-01-rules.html)

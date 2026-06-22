@@ -3,6 +3,7 @@
 ^_pkgdown\.ya?ml$
 ^docs$
 ^pkgdown$
+^vignettes/articles$
 ^README\.Rmd$
 ^\.github$
 ^LICENSE\.md$

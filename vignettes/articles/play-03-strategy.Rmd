@@ -1,0 +1,130 @@
+---
+title: "3. Seeing in four dimensions"
+description: >
+  Why 4D tic-tac-toe is hard, how the slice and cube views reveal hidden lines,
+  and how to use the move-rating overlay and win probability to find winning and
+  blocking moves.
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 9, fig.height = 3,
+  out.width = "100%",
+  dpi = 120
+)
+```
+
+```{r setup}
+library(tesseractR)
+```
+
+> **Tutorial page 3 of 4.**
+> Previous: [« Playing in the app](play-02-app.html) ·
+> Next: [Playing from the R console »](play-04-api.html)
+
+## Why four dimensions is hard
+
+In the 3×3 game there are only 8 winning lines and you can see all of them at
+once. On the tesseract there are **520**, and most of them are invisible in the
+*Full* view because they jump between little boards. The whole skill of the game
+is learning to *see* those hidden lines — and the tools below exist to help.
+
+## Slicing the hypercube
+
+A line that changes `k` or `l` looks scattered across the full board but becomes a
+plain straight line once you fix the right axis. Consider a line that runs *down
+the column of boards* — same `(i, j)`, with `l` going `0 → 3`:
+
+```{r make-line}
+b <- tsr_new_board()
+moves <- list(
+  c(1, 1, 0, 0), c(0, 0, 0, 0),   # X, O
+  c(1, 1, 0, 1), c(0, 0, 0, 1),   # X, O
+  c(1, 1, 0, 2), c(0, 0, 0, 2),   # X, O
+  c(1, 1, 0, 3)                    # X completes l = 0..3 at i=1, j=1, k=0
+)
+for (m in moves) b <- tsr_move(b, m[1], m[2], m[3], m[4])
+tsr_status(b)$winner   # 1 = X has won
+```
+
+In the **Full** view those four X's land in four *different* little boards, so the
+win is easy to miss:
+
+```{r full, fig.width = 7, fig.height = 7, fig.alt = "Full board: the winning line is spread across four different little boards."}
+tsr_plot(b)
+```
+
+Fix the `k` axis at `0` and the same four cells line up vertically inside one
+slice — now it reads as the straight line it really is:
+
+```{r slice, fig.alt = "Slice view with k fixed: the winning line is a straight vertical line."}
+tsr_plot_slice(b, axis = "k", at = 0)
+```
+
+The app exposes exactly this with the **Slice (2D)** and rotatable **Cube (3D)**
+views — try every fixed axis when you are hunting for a threat:
+
+```{r cube, echo = FALSE, fig.alt = "The app's 3D cube view of a slice."}
+knitr::include_graphics("screenshots/app-cube.png")
+```
+
+## Let the engine point at the good moves
+
+You do not have to find every threat by eye. `tsr_rate_moves()` scores every
+legal move for the player to move and flags the important ones. Suppose X already
+has three in a line and it is X's turn:
+
+```{r threat}
+b <- tsr_new_board()
+moves <- list(
+  c(0, 0, 0, 0), c(3, 3, 3, 3),   # X, O
+  c(1, 0, 0, 0), c(3, 3, 3, 2),   # X, O
+  c(2, 0, 0, 0), c(3, 3, 3, 1)    # X, O  -> X has i = 0,1,2 at j=k=l=0
+)
+for (m in moves) b <- tsr_move(b, m[1], m[2], m[3], m[4])
+
+rated <- tsr_rate_moves(b, method = "heuristic")
+# the winning completion is flagged:
+rated[rated$is_winning, c("cell", "i", "j", "k", "l", "win_prob", "is_winning")]
+```
+
+`tsr_rate_moves()` returns one row per legal move with its `win_prob`, a `rank`,
+and the logical flags `is_best`, `is_winning`, and `is_blocking`. The same data
+drives the **move-rating overlay** in the app — darker cells are higher
+`win_prob`:
+
+```{r overlay, echo = FALSE, fig.width = 7, fig.height = 7, fig.alt = "The app board with the purple move-rating overlay shading the stronger cells."}
+knitr::include_graphics("screenshots/app-midgame.png")
+```
+
+### Blocking
+
+The same flags catch *defence*. When your opponent is one move from a line,
+the move that denies it is flagged `is_blocking`. A simple habit wins a lot of
+games: **each turn, if any move is `is_winning`, take it; otherwise if any move is
+`is_blocking`, play it.**
+
+```{r block}
+top <- rated[order(-rated$win_prob), c("cell", "win_prob", "is_best", "is_winning", "is_blocking")]
+head(top, 3)
+```
+
+## A few rules of thumb
+
+* **Central cells touch more lines.** Coordinates near the middle (`1` and `2`)
+  sit on far more of the 520 lines than the corners — they are worth more.
+* **Count threats, not marks.** A cell that advances two different lines at once
+  is a *fork*: even a perfect defender can only block one.
+* **Slice before you commit.** If a position feels murky, cycle the fixed axis
+  through `i, j, k, l` — a threat that is invisible in one slice is usually
+  obvious in another.
+* **Watch the win-probability swing.** A move that drops your number sharply was
+  probably a mistake; the Analysis tab shows exactly where those swings happened.
+
+> Next: [Playing from the R console »](play-04-api.html)
