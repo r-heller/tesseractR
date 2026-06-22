@@ -6,6 +6,11 @@
 docs/
 inst/doc/
 _build.R
-.claude/
 /doc/
 /Meta/
+*.tmp
+*.log
+*~
+*.bak
+*.orig
+*.Rcheck/
