@@ -30,7 +30,7 @@ library(tesseractR)
 > **Prerequisite.** This vignette assumes the API from
 > [Getting Started with tesseractR](tesseractR.html). If you'd rather just
 > *play*, the four-part tutorial starts at
-> [The rules of 4D tic-tac-toe](../articles/play-01-rules.html).
+> [The rules of 4D tic-tac-toe](https://r-heller.github.io/tesseractR/articles/play-01-rules.html).
 
 `tesseractR` is also a *study tool*: a single evaluation core
 (`tsr_evaluate()` / `tsr_win_prob()` / `tsr_rate_moves()`) powers self-play

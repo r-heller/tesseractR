@@ -28,8 +28,8 @@ library(tesseractR)
 ```
 
 > **New here?** Read the four-part playing tutorial — start with
-> [The rules of 4D tic-tac-toe](../articles/play-01-rules.html). This
-> vignette focuses on the API; the tutorial focuses on actually playing.
+> [The rules of 4D tic-tac-toe](https://r-heller.github.io/tesseractR/articles/play-01-rules.html).
+> This vignette focuses on the API; the tutorial focuses on actually playing.
 
 ## What is 4D tic-tac-toe?
 
@@ -159,4 +159,4 @@ tsr_run_app(difficulty = 2L)
 
 > **Next.** See [Simulation and Game Analysis](analysis.html) for self-play
 > and post-game analytics, or jump into the
-> [playing tutorial](../articles/play-01-rules.html).
+> [playing tutorial](https://r-heller.github.io/tesseractR/articles/play-01-rules.html).
