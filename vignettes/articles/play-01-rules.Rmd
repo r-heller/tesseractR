@@ -4,7 +4,7 @@ description: >
   How the 4x4x4x4 hypercube board is laid out, what counts as a winning line,
   and how to read the board plot. The first page of the playing tutorial.
 output:
-  rmarkdown::html_vignette:
+  rmarkdown::html_document:
     toc: true
     toc_depth: 2
 ---

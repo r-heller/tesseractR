@@ -1,5 +1,9 @@
 ---
 title: "Getting Started with tesseractR"
+description: >
+  A short tour of the package: how the 4D hypercube board is indexed,
+  how to play and undo moves, win detection, the slice view, the AI
+  opponent, position evaluation, and the interactive app.
 output:
   rmarkdown::html_vignette:
     toc: true
@@ -22,6 +26,10 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(tesseractR)
 ```
+
+> **New here?** Read the four-part playing tutorial — start with
+> [The rules of 4D tic-tac-toe](../articles/play-01-rules.html). This
+> vignette focuses on the API; the tutorial focuses on actually playing.
 
 ## What is 4D tic-tac-toe?
 
@@ -103,9 +111,11 @@ tsr_status(b_pre)
 
 `tsr_ai_move()` returns the chosen linear cell index. Difficulty `1` always
 takes an immediate win and blocks an immediate threat; higher difficulties
-search further ahead (depth-limited negamax with alpha-beta). Search is
-exponential in pure R — depth 4 may take several seconds; Rcpp acceleration
-is a planned future enhancement.
+search further ahead (depth-limited negamax with alpha-beta).
+
+> **Performance.** Search is exponential in pure R — **depth 4 may take
+> several seconds** on a 256-cell board. Rcpp acceleration is a planned
+> future enhancement and is intentionally out of scope for this release.
 
 ```{r}
 b <- tsr_new_board()
@@ -147,4 +157,6 @@ Cube (3D) view toggle lets you change perspective without changing state.
 tsr_run_app(difficulty = 2L)
 ```
 
-See **"Simulation and Game Analysis"** for self-play and post-game analytics.
+> **Next.** See [Simulation and Game Analysis](analysis.html) for self-play
+> and post-game analytics, or jump into the
+> [playing tutorial](../articles/play-01-rules.html).

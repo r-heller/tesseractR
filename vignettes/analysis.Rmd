@@ -1,5 +1,9 @@
 ---
 title: "Simulation and Game Analysis"
+description: >
+  Self-play between policies, opening statistics with Wilson intervals,
+  per-ply analysis (win probability, regret, missed wins/blocks, turning
+  points), and behavioral profiles for comparing playing styles.
 output:
   rmarkdown::html_vignette:
     toc: true
@@ -22,6 +26,11 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(tesseractR)
 ```
+
+> **Prerequisite.** This vignette assumes the API from
+> [Getting Started with tesseractR](tesseractR.html). If you'd rather just
+> *play*, the four-part tutorial starts at
+> [The rules of 4D tic-tac-toe](../articles/play-01-rules.html).
 
 `tesseractR` is also a *study tool*: a single evaluation core
 (`tsr_evaluate()` / `tsr_win_prob()` / `tsr_rate_moves()`) powers self-play
@@ -68,8 +77,12 @@ tsr_game_summary(g)
 
 `tsr_simulate()` runs many games and returns a tibble with the
 first-move position broken into its four coordinates — the substrate for
-opening statistics. Pure-R self-play is throughput-bounded; the heavy hot
-paths are flagged for future Rcpp replacement.
+opening statistics.
+
+> **Performance.** Pure-R self-play is throughput-bounded; the heavy hot
+> paths (`tsr_evaluate`, legal-move generation) are flagged for future
+> Rcpp replacement. Meaningful opening statistics need thousands of games;
+> the example below is deliberately tiny so the vignette builds in seconds.
 
 ```{r}
 sim <- tsr_simulate("random", "random", n_games = 12L,

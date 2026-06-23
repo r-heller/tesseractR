@@ -4,7 +4,7 @@ description: >
   Play tesseractR directly in R: create a board, make and undo moves, list legal
   moves, ask the AI for a move, evaluate positions, and plot the result.
 output:
-  rmarkdown::html_vignette:
+  rmarkdown::html_document:
     toc: true
     toc_depth: 2
 ---

@@ -2,14 +2,29 @@ url: https://r-heller.github.io/tesseractR/
 
 template:
   package: themakR
+  # Per-package accent override (themakR ships Hugo Coder blue by default;
+  # tesseractR keeps the suite purple it has used since S5).
+  bslib:
+    primary: "#5E2C8E"
 
 development:
   mode: auto
 
+# tesseractR is r-heller's package, not part of CTTIR, so drop the
+# rouniverse sidebar component that themakR ships pointing at the CTTIR
+# universe. Everything else in themakR's home sidebar (links, license,
+# citation, authors) is kept.
+home:
+  sidebar:
+    structure: [links, license, citation, authors]
+
+# Keep themakR's lightswitch on the far right of the navbar — the suite's
+# native light/dark/auto toggle. Mirror themakR's right cluster while
+# preserving the custom intro + tutorial items on the left.
 navbar:
   structure:
     left:  [intro, tutorial, reference, articles, news]
-    right: [search, github]
+    right: [search, github, lightswitch]
   components:
     intro:
       text: <i class="fa fa-rocket"></i> Get started
