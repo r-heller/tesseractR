@@ -12,6 +12,7 @@
 ^cran-comments\.md$
 ^\.claude$
 ^codecov\.yml$
+^_coverage$
 ^data-raw$
 ^AUDIT_REFINE_LOOP\.md$
 ^ORCHESTRATOR\.md$

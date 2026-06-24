@@ -3,11 +3,20 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/r-heller/tesseractR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-heller/tesseractR/actions/workflows/R-CMD-check.yaml)
+[![pkgdown](https://github.com/r-heller/tesseractR/actions/workflows/pkgdown.yaml/badge.svg)](https://r-heller.github.io/tesseractR/)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/tesseractR)](https://CRAN.R-project.org/package=tesseractR)
+[![Codecov test
+coverage](https://codecov.io/gh/r-heller/tesseractR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-heller/tesseractR?branch=main)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/tesseractR)](https://cran.r-project.org/package=tesseractR)
+[![CRAN downloads
+total](https://cranlogs.r-pkg.org/badges/grand-total/tesseractR)](https://cran.r-project.org/package=tesseractR)
+[![License:
+MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![R-CMD-check](https://github.com/r-heller/tesseractR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-heller/tesseractR/actions/workflows/R-CMD-check.yaml)
-[![Codecov test
-coverage](https://codecov.io/gh/r-heller/tesseractR/graph/badge.svg)](https://app.codecov.io/gh/r-heller/tesseractR)
 <!-- badges: end -->
 
 `tesseractR` plays four-dimensional tic-tac-toe on a `4×4×4×4` hypercube

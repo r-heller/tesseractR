@@ -6,6 +6,8 @@
 \alias{tesseractR-package}
 \title{tesseractR: Four-Dimensional Tic-Tac-Toe with a Heuristic AI Opponent}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Play four-dimensional tic-tac-toe on a four-by-four-by-four-by-four hypercube, where the first player to align four marks along any straight line in four-dimensional space wins. Provides a game engine with legal-move generation and win detection across all 520 winning lines, a depth-limited negamax artificial-intelligence opponent with adjustable difficulty, 'ggplot2' visualization of the hypercube as a grid of boards, and an interactive 'shiny' application for play.
 }
 \seealso{
