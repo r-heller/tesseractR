@@ -7,3 +7,10 @@ body {
 pre {
   background-color: #fafafa;
 }
+
+/* Keep wide analysis tables scrollable within the app column. */
+#summary, #turning {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}

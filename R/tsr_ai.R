@@ -22,10 +22,11 @@
 #' @export
 tsr_ai_move <- function(board, difficulty = 2L) {
   .tsr_check_board(board)
-  difficulty <- as.integer(difficulty)
-  if (length(difficulty) != 1L || !(difficulty %in% 1:4)) {
+  if (!is.numeric(difficulty) || length(difficulty) != 1L ||
+      !is.finite(difficulty) || !(difficulty %in% 1:4)) {
     cli::cli_abort("{.arg difficulty} must be an integer in {.code 1:4}.")
   }
+  difficulty <- as.integer(difficulty)
   if (tsr_check_win(board) != 0L || tsr_is_full(board)) {
     cli::cli_abort("Cannot ask the AI to move on a finished board.")
   }

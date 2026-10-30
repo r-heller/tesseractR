@@ -19,16 +19,19 @@ tsr_run_app <- function(difficulty = 2L) {
       i = "Install it with {.code install.packages(\"shiny\")}."
     ))
   }
-  difficulty <- as.integer(difficulty)
-  if (length(difficulty) != 1L || !(difficulty %in% 1:4)) {
+  if (!is.numeric(difficulty) || length(difficulty) != 1L ||
+      !is.finite(difficulty) || !(difficulty %in% 1:4)) {
     cli::cli_abort("{.arg difficulty} must be an integer in {.code 1:4}.")
   }
+  difficulty <- as.integer(difficulty)
   app_dir <- system.file("shiny", "tesseractR", package = "tesseractR")
   if (!nzchar(app_dir)) {
     cli::cli_abort("Shiny app directory not found in the installed package.")
   }
+  previous <- Sys.getenv("TESSERACTR_INIT_DIFFICULTY", unset = NA_character_)
   Sys.setenv(TESSERACTR_INIT_DIFFICULTY = as.character(difficulty))
-  on.exit(Sys.unsetenv("TESSERACTR_INIT_DIFFICULTY"), add = TRUE)
+  on.exit(if (is.na(previous)) Sys.unsetenv("TESSERACTR_INIT_DIFFICULTY") else
+    Sys.setenv(TESSERACTR_INIT_DIFFICULTY = previous), add = TRUE)
   shiny::runApp(app_dir, display.mode = "normal")
   invisible(NULL)
 }

@@ -33,20 +33,22 @@ tsr_move <- function(board, i = NULL, j = NULL, k = NULL, l = NULL, cell = NULL)
     if (is.null(i) || is.null(j) || is.null(k) || is.null(l)) {
       cli::cli_abort("All of {.arg i}, {.arg j}, {.arg k}, {.arg l} must be supplied.")
     }
-    i <- as.integer(i); j <- as.integer(j); k <- as.integer(k); l <- as.integer(l)
-    if (length(i) != 1L || length(j) != 1L || length(k) != 1L || length(l) != 1L) {
+    valid_coordinate <- function(x) is.numeric(x) && length(x) == 1L &&
+      is.finite(x) && x == floor(x)
+    if (!all(vapply(list(i, j, k, l), valid_coordinate, logical(1)))) {
       cli::cli_abort("Coordinates must be scalar integers.")
     }
     if (any(c(i, j, k, l) < 0L | c(i, j, k, l) > 3L)) {
       cli::cli_abort("Coordinates must lie in {.code 0:3}.")
     }
+    i <- as.integer(i); j <- as.integer(j); k <- as.integer(k); l <- as.integer(l)
     idx <- .tsr_coord_to_idx(i, j, k, l)
   } else {
-    cell <- as.integer(cell)
-    if (length(cell) != 1L || cell < 1L || cell > 256L) {
+    if (!is.numeric(cell) || length(cell) != 1L || !is.finite(cell) ||
+        cell != floor(cell) || cell < 1L || cell > 256L) {
       cli::cli_abort("{.arg cell} must be a single integer in {.code 1:256}.")
     }
-    idx <- cell
+    idx <- as.integer(cell)
   }
   if (tsr_check_win(board) != 0L || tsr_is_full(board)) {
     cli::cli_abort(c(
@@ -84,8 +86,8 @@ tsr_move <- function(board, i = NULL, j = NULL, k = NULL, l = NULL, cell = NULL)
 #' @export
 tsr_undo <- function(board, n = 1L) {
   .tsr_check_board(board)
-  n <- as.integer(n)
-  if (length(n) != 1L || n < 0L) {
+  if (!is.numeric(n) || length(n) != 1L || !is.finite(n) ||
+      n != floor(n) || n < 0L) {
     cli::cli_abort("{.arg n} must be a non-negative integer scalar.")
   }
   if (n > length(board$history)) {
@@ -94,6 +96,7 @@ tsr_undo <- function(board, n = 1L) {
       i = "Use {.code length(board$history)} as an upper bound."
     ))
   }
+  n <- as.integer(n)
   if (n == 0L) return(board)
   keep <- length(board$history) - n
   removed <- board$history[(keep + 1L):length(board$history)]

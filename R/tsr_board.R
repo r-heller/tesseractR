@@ -22,7 +22,7 @@ validate_ttt_board <- function(x, call = rlang::caller_env()) {
       call = call
     )
   }
-  if (any(s < 0L | s > 2L)) {
+  if (anyNA(s) || any(s < 0L | s > 2L)) {
     cli::cli_abort(
       "{.field state} must contain only 0, 1, or 2 (got values outside that range).",
       call = call
@@ -36,7 +36,7 @@ validate_ttt_board <- function(x, call = rlang::caller_env()) {
   if (!is.integer(h)) {
     cli::cli_abort("{.field history} must be an integer vector.", call = call)
   }
-  if (length(h) > 0L && any(h < 1L | h > 256L)) {
+  if (anyNA(h) || (length(h) > 0L && any(h < 1L | h > 256L))) {
     cli::cli_abort("{.field history} entries must lie in 1:256.", call = call)
   }
   n_played <- sum(s != 0L)

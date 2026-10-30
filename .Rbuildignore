@@ -23,3 +23,5 @@
 ^doc$
 ^Meta$
 ^HANDOFF\.md$
+^\.git$
+^MAINTENANCE\.md$

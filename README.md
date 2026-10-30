@@ -27,6 +27,10 @@ panel.
 
 ## Installation
 
+Requires R >= 4.1.0. For a reviewed local checkout, run
+`R CMD INSTALL .` after installing the packages listed in `DESCRIPTION`.
+The GitHub command below installs the published branch.
+
 ``` r
 # install.packages("remotes")
 remotes::install_github("r-heller/tesseractR")

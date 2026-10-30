@@ -1,3 +1,9 @@
+# tesseractR development
+
+* Move coordinates, cell indices, undo counts and AI difficulty now reject
+  fractional, missing and non-finite values before integer conversion.
+* Missing board-state and history entries now produce controlled validation errors.
+
 # tesseractR 0.1.0
 
 ## Initial release
