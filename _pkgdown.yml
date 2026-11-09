@@ -1,6 +1,10 @@
 url: https://r-heller.github.io/tesseractR/
 
 template:
+  includes:
+    in_header: |
+      <meta name="theme-color" content="#1565c0">
+      <script defer data-domain="r-heller.github.io/tesseractr" src="https://analytics.hellebo.de/js/script.file-downloads.outbound-links.js"></script>
   package: themakR
   # Per-package accent override (themakR ships Hugo Coder blue by default;
   # tesseractR keeps the suite purple it has used since S5).
