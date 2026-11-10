@@ -32,7 +32,7 @@ A turning point is a ply with \code{abs(delta) >= 0.15}.
 }
 \examples{
 \donttest{
-g <- tsr_play_game("random", "random", seed = 1L)
+g <- tsr_play_game("greedy", "random", seed = 2L) # a short, decisive game
 tsr_analyze_game(g)
 }
 }

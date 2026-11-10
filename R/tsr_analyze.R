@@ -21,7 +21,7 @@
 #'   `is_best`, `missed_win`, `missed_block`, `is_turning_point`.
 #' @examples
 #' \donttest{
-#' g <- tsr_play_game("random", "random", seed = 1L)
+#' g <- tsr_play_game("greedy", "random", seed = 2L) # a short, decisive game
 #' tsr_analyze_game(g)
 #' }
 #' @export
@@ -116,7 +116,7 @@ tsr_analyze_game <- function(game, method = c("heuristic", "rollout"),
 #' @return A tibble with the same schema as `analysis`, possibly zero rows.
 #' @examples
 #' \donttest{
-#' g <- tsr_play_game("random", "random", seed = 1L)
+#' g <- tsr_play_game("greedy", "random", seed = 2L) # a short, decisive game
 #' tsr_turning_points(tsr_analyze_game(g))
 #' }
 #' @export
@@ -145,7 +145,7 @@ isTRUE_vec <- function(x) !is.na(x) & x
 #'   `n_turning_points`, `decisiveness`.
 #' @examples
 #' \donttest{
-#' g <- tsr_play_game("random", "random", seed = 1L)
+#' g <- tsr_play_game("greedy", "random", seed = 2L) # a short, decisive game
 #' tsr_game_summary(g)
 #' }
 #' @export
@@ -182,9 +182,9 @@ tsr_game_summary <- function(game) {
 #'   `defense_rate`, `aggression`, `mean_decisiveness`.
 #' @examples
 #' \donttest{
-#' g1 <- tsr_play_game("random", "random", seed = 1L)
-#' g2 <- tsr_play_game("random", "random", seed = 2L)
-#' tsr_behavior_profile(list(g1, g2), side = 1L, label = "random")
+#' g1 <- tsr_play_game("greedy", "random", seed = 2L)
+#' g2 <- tsr_play_game("greedy", "random", seed = 6L)
+#' tsr_behavior_profile(list(g1, g2), side = 1L, label = "greedy")
 #' }
 #' @export
 tsr_behavior_profile <- function(games, side = 1L, label = NULL) {
@@ -293,8 +293,8 @@ tsr_behavior_profile <- function(games, side = 1L, label = NULL) {
 #' @return A tibble with one row per input.
 #' @examples
 #' \donttest{
-#' g1 <- tsr_play_game("random", "random", seed = 1L)
-#' p1 <- tsr_behavior_profile(list(g1), side = 1L, label = "random")
+#' g1 <- tsr_play_game("greedy", "random", seed = 2L)
+#' p1 <- tsr_behavior_profile(list(g1), side = 1L, label = "greedy")
 #' p2 <- tsr_behavior_profile(list(g1), side = 2L, label = "random")
 #' tsr_compare_profiles(p1, p2)
 #' }
@@ -321,7 +321,7 @@ tsr_compare_profiles <- function(...) {
 #' @return A `ggplot` object.
 #' @examples
 #' \donttest{
-#' g <- tsr_play_game("random", "random", seed = 1L)
+#' g <- tsr_play_game("greedy", "random", seed = 2L) # a short, decisive game
 #' tsr_plot_winprob(tsr_analyze_game(g))
 #' }
 #' @export

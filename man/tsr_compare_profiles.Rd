@@ -18,8 +18,8 @@ comparison. Errors on mismatched columns.
 }
 \examples{
 \donttest{
-g1 <- tsr_play_game("random", "random", seed = 1L)
-p1 <- tsr_behavior_profile(list(g1), side = 1L, label = "random")
+g1 <- tsr_play_game("greedy", "random", seed = 2L)
+p1 <- tsr_behavior_profile(list(g1), side = 1L, label = "greedy")
 p2 <- tsr_behavior_profile(list(g1), side = 2L, label = "random")
 tsr_compare_profiles(p1, p2)
 }

@@ -43,6 +43,6 @@ Terminal positions short-circuit: a win returns \code{1}, a loss \code{0}, a dra
 \examples{
 tsr_win_prob(tsr_new_board())
 \donttest{
-tsr_win_prob(tsr_new_board(), method = "rollout", n = 20L)
+tsr_win_prob(tsr_new_board(), method = "rollout", n = 2L)
 }
 }

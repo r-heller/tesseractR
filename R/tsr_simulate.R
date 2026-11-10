@@ -70,7 +70,7 @@
 #'   `policies` (named character `c(x, o)`), `final_board` (a `ttt_board`),
 #'   `to_move` (integer vector — moving player at each ply).
 #' @examples
-#' g <- tsr_play_game("random", "random", seed = 1L)
+#' g <- tsr_play_game("greedy", "random", seed = 2L) # a short, decisive game
 #' g$winner
 #' @export
 tsr_play_game <- function(policy_x, policy_o, seed = NULL) {

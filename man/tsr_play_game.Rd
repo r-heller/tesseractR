@@ -31,6 +31,6 @@ Built-in policy strings: \code{"random"}, \code{"greedy"}, \code{"ai"} (depth 2)
 \code{"aiN"} for \code{N} in \code{1:4} (e.g. \code{"ai3"}).
 }
 \examples{
-g <- tsr_play_game("random", "random", seed = 1L)
+g <- tsr_play_game("greedy", "random", seed = 2L) # a short, decisive game
 g$winner
 }

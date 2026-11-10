@@ -1,8 +1,22 @@
-# tesseractR development
+# tesseractR 0.2.0
+
+## CRAN preparation
+
+* Maintainer address changed to raban.heller@uni-ulm.de.
+* The package help page uses the vector logo, which is now shipped in the
+  source package; the build no longer leaves an empty `tools/` directory.
+* Added `cran-comments.md` details for the first submission.
+* Examples that analyse games now use a short decisive game, and the slow
+  `\donttest{}` examples use fewer rollouts and a shallower search, so each
+  example finishes in a few seconds.
+
+## Bug fixes
 
 * Move coordinates, cell indices, undo counts and AI difficulty now reject
   fractional, missing and non-finite values before integer conversion.
 * Missing board-state and history entries now produce controlled validation errors.
+* `tsr_run_app()` restores a pre-existing `TESSERACTR_INIT_DIFFICULTY`
+  environment variable when the app stops or fails to start.
 
 # tesseractR 0.1.0
 

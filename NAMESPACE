@@ -31,5 +31,7 @@ export(tsr_undo)
 export(tsr_win_prob)
 export(tsr_winning_line)
 importFrom(ggplot2,autoplot)
-importFrom(rlang,"%||%")
-importFrom(rlang,.data)
+importFrom(rlang,
+  "%||%",
+  .data
+)

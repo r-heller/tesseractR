@@ -18,7 +18,7 @@ Filters the analysis to plies where \code{is_turning_point} is \code{TRUE}, sort
 }
 \examples{
 \donttest{
-g <- tsr_play_game("random", "random", seed = 1L)
+g <- tsr_play_game("greedy", "random", seed = 2L) # a short, decisive game
 tsr_turning_points(tsr_analyze_game(g))
 }
 }

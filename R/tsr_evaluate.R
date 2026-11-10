@@ -100,7 +100,7 @@ tsr_evaluate <- function(board, player = NULL) {
 #' @examples
 #' tsr_win_prob(tsr_new_board())
 #' \donttest{
-#' tsr_win_prob(tsr_new_board(), method = "rollout", n = 20L)
+#' tsr_win_prob(tsr_new_board(), method = "rollout", n = 2L)
 #' }
 #' @export
 tsr_win_prob <- function(board, player = NULL,

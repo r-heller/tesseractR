@@ -17,7 +17,7 @@
 #' @examples
 #' tsr_ai_move(tsr_new_board(), difficulty = 1L)
 #' \donttest{
-#' tsr_ai_move(tsr_new_board(), difficulty = 3L)
+#' tsr_ai_move(tsr_new_board(), difficulty = 2L)
 #' }
 #' @export
 tsr_ai_move <- function(board, difficulty = 2L) {

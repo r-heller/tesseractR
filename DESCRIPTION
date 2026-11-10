@@ -1,8 +1,8 @@
 Package: tesseractR
 Title: Four-Dimensional Tic-Tac-Toe with a Heuristic AI Opponent
-Version: 0.1.0
+Version: 0.2.0
 Authors@R:
-    person("Raban", "Heller", email = "raban.heller@charite.de",
+    person("Raban", "Heller", email = "raban.heller@uni-ulm.de",
            role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8006-9742"))
 Description: Play four-dimensional tic-tac-toe on a four-by-four-by-four-by-four
     hypercube, where the first player to align four marks along any straight line
@@ -37,4 +37,4 @@ Suggests:
 Config/testthat/edition: 3
 Config/Needs/website: CTTIR/themakR
 VignetteBuilder: knitr
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.1

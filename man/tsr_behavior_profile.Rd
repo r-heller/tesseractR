@@ -24,8 +24,8 @@ aggregate profile for the chosen side (player X by default).
 }
 \examples{
 \donttest{
-g1 <- tsr_play_game("random", "random", seed = 1L)
-g2 <- tsr_play_game("random", "random", seed = 2L)
-tsr_behavior_profile(list(g1, g2), side = 1L, label = "random")
+g1 <- tsr_play_game("greedy", "random", seed = 2L)
+g2 <- tsr_play_game("greedy", "random", seed = 6L)
+tsr_behavior_profile(list(g1, g2), side = 1L, label = "greedy")
 }
 }

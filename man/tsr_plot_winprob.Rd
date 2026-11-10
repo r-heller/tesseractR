@@ -18,7 +18,7 @@ reference and turning points marked. Returns a \code{ggplot}.
 }
 \examples{
 \donttest{
-g <- tsr_play_game("random", "random", seed = 1L)
+g <- tsr_play_game("greedy", "random", seed = 2L) # a short, decisive game
 tsr_plot_winprob(tsr_analyze_game(g))
 }
 }
