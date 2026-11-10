@@ -2,8 +2,8 @@ Package: tesseractR
 Title: Four-Dimensional Tic-Tac-Toe with a Heuristic AI Opponent
 Version: 0.2.0
 Authors@R:
-    person("Raban", "Heller", email = "raban.heller@uni-ulm.de",
-           role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8006-9742"))
+    person("R.", "Heller", email = "raban.heller@uni-ulm.de",
+           role = c("aut", "cre", "cph"), comment = c(ORCID = "0000-0001-8006-9742"))
 Description: Play four-dimensional tic-tac-toe on a four-by-four-by-four-by-four
     hypercube, where the first player to align four marks along any straight line
     in four-dimensional space wins. Provides a game engine with legal-move
