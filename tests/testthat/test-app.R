@@ -12,6 +12,8 @@ test_that("inst/shiny/tesseractR/app.R has no library()/require() calls", {
 })
 
 test_that("tsr_run_app errors clearly on invalid difficulty", {
+  # The shiny check runs first, so the difficulty message needs shiny.
+  skip_if_not_installed("shiny")
   expect_error(tsr_run_app(difficulty = 5L), "1:4")
   expect_error(tsr_run_app(difficulty = 0L), "1:4")
 })
