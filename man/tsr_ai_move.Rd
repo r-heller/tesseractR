@@ -4,12 +4,15 @@
 \alias{tsr_ai_move}
 \title{AI move on a 4D tic-tac-toe board}
 \usage{
-tsr_ai_move(board, difficulty = 2L)
+tsr_ai_move(board, difficulty = 2L, time_limit = NULL)
 }
 \arguments{
 \item{board}{A \code{ttt_board}.}
 
 \item{difficulty}{Integer in \code{1:4} (default \code{2L}). Maps to search depth.}
+
+\item{time_limit}{Optional finite nonnegative elapsed-time budget in seconds.
+\code{NULL} (default) preserves unrestricted depth-limited search.}
 }
 \value{
 Integer scalar: the chosen cell's linear index in \code{1:256}.
@@ -24,8 +27,12 @@ Tie-breaking among moves with equal evaluation is deterministic (lowest
 linear index wins).
 
 Note: search is exponential in depth and runs in pure R; depth \code{4} may take
-several seconds on a 256-cell board. Rcpp acceleration is a planned future
-enhancement and is intentionally out of scope for this release.
+several seconds on a 256-cell board. An optional cooperative time budget
+searches successively deeper levels and returns the last fully completed
+level. If none completes, the lowest legal cell is returned. Immediate wins
+and blocks are checked first, including with a zero budget. Checks occur
+between search operations; scheduling and a single operation can exceed the
+requested elapsed time. This is not a hard real-time limit.
 }
 \examples{
 tsr_ai_move(tsr_new_board(), difficulty = 1L)

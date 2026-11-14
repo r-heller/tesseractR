@@ -60,3 +60,16 @@ tsr_plot(b)
 <img src="man/figures/README-plot-1.png" alt="Mid-game tesseractR board" width="100%" />
 
 Launch the interactive app with `tsr_run_app()` (requires `shiny`).
+
+### Interactive AI time budget
+
+The Shiny app gives each AI response a cooperative 0.5-second search budget.
+Difficulty sets the maximum depth; the AI uses the last fully completed depth,
+or the lowest legal cell if none completes. Immediate wins and blocks retain
+priority. The handler runs synchronously: clock checks bound search work, but
+process scheduling and an individual operation can exceed the requested time.
+
+Direct calls to `tsr_ai_move()` remain unrestricted by default. Supply
+`time_limit` in seconds for bounded iterative search, for example
+`tsr_ai_move(board, difficulty = 4L, time_limit = 0.5)`. A zero budget returns
+a deterministic legal fallback after checking immediate tactics.

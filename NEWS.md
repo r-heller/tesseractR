@@ -1,5 +1,9 @@
 # tesseractR 0.2.0
 
+* Added an optional cooperative AI search budget with iterative deepening and
+  a legal deterministic fallback. Unrestricted calls retain existing search
+  behavior. The Shiny app now applies a 0.5-second budget per AI response.
+
 ## CRAN preparation
 
 * Maintainer address changed to raban.heller@uni-ulm.de.

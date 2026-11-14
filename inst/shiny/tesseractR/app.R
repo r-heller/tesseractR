@@ -48,7 +48,8 @@ ui <- shiny::fluidPage(
         shiny::sliderInput("difficulty",
                            tagged("AI difficulty", "robot"),
                            min = 1L, max = 4L,
-                           value = init_difficulty, step = 1L)
+                           value = init_difficulty, step = 1L),
+        shiny::helpText("AI thinks for about half a second, using the deepest search it can finish.")
       ),
       shiny::hr(),
       shiny::radioButtons(
@@ -316,7 +317,9 @@ server <- function(input, output, session) {
     rv$history <- c(rv$history, cell)
     if (input$mode == "ai" &&
         tesseractR::tsr_check_win(nb) == 0L && !tesseractR::tsr_is_full(nb)) {
-      ai_cell <- tesseractR::tsr_ai_move(nb, difficulty = input$difficulty)
+      ai_cell <- tesseractR::tsr_ai_move(
+        nb, difficulty = input$difficulty, time_limit = 0.5
+      )
       rv$board <- tesseractR::tsr_move(nb, cell = ai_cell)
       rv$history <- c(rv$history, ai_cell)
     }
